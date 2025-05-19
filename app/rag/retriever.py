@@ -1,6 +1,6 @@
 import pandas as pd
 from langchain.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.docstore.document import Document
 from dotenv import load_dotenv
@@ -24,6 +24,11 @@ def load_vectorstore(csv_path="data/job_roles_dataset.csv"):
     splitter = CharacterTextSplitter(chunk_size=500, chunk_overlap=100)
     chunks = splitter.split_documents(documents)
 
-    embeddings = OpenAIEmbeddings()
+    hf_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2",
+        huggingfacehub_api_token=hf_token
+    )
+    
     vectorstore = FAISS.from_documents(chunks, embeddings)
     return vectorstore

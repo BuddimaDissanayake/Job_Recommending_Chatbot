@@ -1,6 +1,4 @@
 langchain
+langchain-community
 openai
-faiss-cpu
-tiktoken
 python-dotenv
-pandas
